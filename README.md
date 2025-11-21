@@ -21,8 +21,6 @@ EXCEL - Programa  EXCEL - Programa Microsfot Office (Planilha Excel) Microsoft O
  são geralmente considerados aceitáveis, com valores mais altos indicando maior confiabilidade.  
  Limitações: O alfa de Cronbach pode ser baixo se houver poucos itens na escala ou se os itens forem muito heterogêneos. 
 
-Referência:
-Alfa de Cronbach. Wikipedia: https://en.wikipedia.org/wiki/Cronbach%27s_alpha
 
 
 
