@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Alfa de Cronbach</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- ESTILIZAÇÃO CSS -->
+<style>
+    * { 
+	box-sizing: border-box; 
+	margin: 0; 
+	padding: 0; 
+	font-family: 'Inter', sans-serif; 
+	}
+
+    body { 
+	background-color: #f0f4f8; 
+	display: flex; 
+	justify-content: center; 
+	align-items: flex-start; 
+	min-height: 100vh; 
+	padding: 40px; 
+	}
+
+    .app-container { 
+	background-color: #fff; 
+	padding: 40px;
+	border-radius: 16px; 
+	box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+	max-width: 600px; width: 100%;
+	}
+
+
+    h1 { 
+	text-align: center; 
+	margin-bottom: 30px; 
+	color: #1f2937; 
+        }
+
+    .card { 
+	background-color: #f9fafb; 
+	padding: 20px; 
+	border-radius: 12px; 
+	margin-bottom: 20px; 
+	box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+	transition: 0.3s; 
+        }
+
+    .card:hover { 
+	box-shadow: 0 6px 15px rgba(0,0,0,0.1); 
+        }
+    
+    input[type="file"], select, button { 
+	width: 100%; 
+	padding: 12px 16px; 
+	border-radius: 
+	8px; border: 1px solid #d1d5db; 
+	margin-top: 12px; 
+	font-size: 16px; 
+        }
+
+    button { 
+	background-color: #3b82f6; 
+	color: white; 
+	border: none; 
+	cursor: pointer; 
+	font-weight: 600; 
+	transition: 0.3s; 
+        }
+
+    button:hover { 
+	background-color: #2563eb; 
+        }
+
+    #resultado { 
+	margin-top: 20px; 
+	padding: 20px; 
+	border-radius: 12px; 
+	background-color: #e0f2fe; 
+	color: #0369a1; 
+	font-weight: 600; 
+	text-align: center; 
+	font-size: 18px; 
+	box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+</style>
+
+<!--CORPO DA WEBPAGE -->
+</head>
+<body>
+
+
+<div class="app-container">
+    <h1>Calculadora de Alfa de Cronbach</h1><br>
+    <h5> By: Iraê César Brandão - Dev </h5>
+    <hr>
+    <div class="card">
+        <label>📂 Envie sua planilha Excel:</label>
+        <input type="file" id="fileInput" accept=".xlsx">
+    </div>
+
+    <div class="card" style="display:none;" id="sheetCard">
+        <label>📑 Selecione a aba:</label>
+        <select id="sheetSelect"></select>
+    </div>
+<h5 style="text-align: justify;"> Após a importação da planilha devidaemente preenchida, ir no botão "Escolher arquivo", logo, aparecerá abaixo "Selecionar aba", escolha pelo menu "Responses". Após basta clicar em "Calcular Alfa" que o resultado será apresentado logo abaixo:</h5>
+
+    <div class="card" style="display:none;" id="calcCard">
+        <button id="calcBtn">Calcular Alfa</button>
+    </div>
+
+    <div id="resultado"></div>
+
+
+<hr>
+<br>
+
+<!-- ORIENTAÇÕES SOBRE USO E CÓDIGO -->
+
+<div class="app-container">
+<h2> INFORMAÇÕES SOBRE O APP </h2> <br>
+<h4> LINGUAGENS UTILIZADAS</h4>
+<br>
+
+<h6>
+<ul>
+<li> HTML = estrutura </li>
+<li> CSS = aparência </li>
+<li> JavaScript = lógica e cálculos e a lógica do aplicativo, incluindo: </li>
+     - Ler a planilha Excel usando SheetJS (XLSX.js);
+<br> - Identificar as colunas dos itens; 
+<br> - Fazer os cálculos (variância, soma, alfa de Cronbach);
+<br> - Mostrar o resultado na tela.
+<li> EXCEL - Programa  EXCEL - Programa Microsfot Office (Planilha Excel)  Office (Planilha Excel) 
+<br><br>
+<img class="imagem" src="fig6.jpg" alt="Descrição da imagem"></img><br>
+
+<br><br><hr>
+</h6><br>
+<h4> O que é o Alfa de Cronbach </h4><br>
+
+<img class="imagem" src="fig3.jpg" alt="Descrição da imagem"></img>
+<br><br>
+<h6 style="text-align: justify;">
+O Alfa de Cronbach é uma medida de confiabilidade que avalia a consistência interna de um conjunto de itens, como as perguntas de um questionário. Ele verifica o quanto os itens de uma escala estão relacionados entre si e medem o mesmo construto subjacente, como a satisfação do cliente ou a autoestima. Um valor alto indica que os itens são consistentes, enquanto um valor baixo pode indicar que os itens não estão medindo a mesma coisa ou que são inconsistentes.                    Como funciona     Avalia a consistência interna: O alfa de Cronbach mede o grau em que os itens de uma escala concordam entre si.  Indica confiabilidade: É uma medida da confiabilidade da escala, ou seja, a extensão em que ela é uma medida consistente de um conceito.  Correlação entre itens: Ele é calculado com base nas correlações entre os itens da escala. Quanto mais correlacionados os itens estiverem, maior será o valor do alfa.  Escala de 0 a 1: Teoricamente, o valor do alfa varia de \(0\) a \(1\). Valores a partir de \(0,70\) são geralmente considerados aceitáveis, com valores mais altos indicando maior confiabilidade.  Limitações: O alfa de Cronbach pode ser baixo se houver poucos itens na escala ou se os itens forem muito heterogêneos. <br>
+<br>
+
+Referência: 
+</h6>
+<a href="https://en.wikipedia.org/wiki/Cronbach%27s_alpha" target="_blank"> <h5><b>Alfa de Cronbach. Wikipedia:</b> https://en.wikipedia.org/wiki/Cronbach%27s_alpha </h5> </a> <br>
+
+<br><hr><br>
+
+<h2> ROTINAS DO APP </h2> <br>
+</h6>
+<h4>(1) O que o HTML faz (Resumo)</h4>
+<br>
+<h6 style="text-align: justify;">
+O arquivo HTML criado para você funciona como um miniaplicativo web.  <br>
+
+    1 — Permite enviar um arquivo Excel (.xlsx): O usuário clica em “Enviar planilha” e escolhe o arquivo.
+ <br> 
+
+<br>2 — Lê o arquivo no navegador. Usa a biblioteca SheetJS (XLSX.js) para:
+<br> - Ler o conteúdo da planilha;
+<br> - Descobrir quais abas existem;
+<br> - Permitir ao usuário escolher uma delas.
+<br>
+- Link para baixar a planilha:
+<a href="ferramenta_aig_com_dados.xlsx">ferramenta_aig_com_dados.xlsx</a> <br>
+
+
+<br>3 — Identifica colunas que começam com “Item” <br>
+Qualquer coluna cujo nome comece com: <br>
+Item
+<br>item
+
+<br>ITEM
+<br>item1
+<br>Item_01
+<br> é considerada um item da escala.
+
+<br><br>
+4 — Extrai somente essas colunas: <br>
+O aplicativo pega apenas as colunas dos itens e converte os valores para números.<br>
+<br>
+
+5 — Calcula o Alfa de Cronbach em JavaScript: <br>
+A lógica matemática é aplicada dentro do navegador, sem servidor. <br>
+<br>
+
+6 — Mostra o resultado estilizado na tela: <br>
+- Exibe algo como:<br>
+<i><b>Alfa de Cronbach: 0.8421 </b></i>
+</h6>
+<br><br>
+<hr>
+<br>
+
+<h4><b> (2) Como o cálculo do Alfa de Cronbach funciona (Resumo direto)</b></h4><br>
+<h6 style="text-align: justify;">
+<ul>
+<li> O Alfa de Cronbach mede se os itens da escala avaliam o mesmo construto, ou seja, se são consistentes internamente.
+O cálculo segue esta fórmula:</li>
+onde:<br>
+ 
+<img src="fig1.jpg" alt="Descrição da imagem"></img><br>
+
+•	k = número de itens<br>
+•	Var(itens) = variância de cada item individual <br>
+•	Var(total) = variância da soma dos itens de cada participante <br>
+</h6>
+<br><br>
+<hr><br>
+
+<h4><b>(3) Passos que o código segue:</b></h4>
+<h6>
+<br> 1 — Calcula a variância de cada item (Var(item))
+Para cada coluna Item1, Item2, Item3… 
+
+<br>
+<br> 2 — Soma essas variâncias: <br><br>
+</h6>
+<h3>∑Var(item)</h3>
+<h6>
+<br> 
+<br> 3 — Soma os itens por linha (pessoa por pessoa)
+<br>Exemplo:
+<br>
+
+<br>
+<img src="fig4.jpg" alt="Descrição da imagem"></img><br>
+<br>
+<br>
+
+
+<br> 4 — Calcula a variância dos totais (Var(total))
+<br>
+<br> 5 — Aplica a fórmula
+<br>Com todo mundo respondido, aplica: <br>
+<img src="fig2.jpg" alt="Descrição da imagem"></img><br>
+<br><br>
+6 — Finalmente: O resultado final é o alfa. 
+<br><br>
+<img src="fig5.jpg" alt="Descrição da imagem"></img><br>
+
+</div>
+<br><br>
+<footer>
+<h6 style="color:blue;  border: 2px solid blue;"><i>© 2025. All rights reserved LUCK WAY® Informática -  Developed by: Iraê César Brandão</i></h6>
+</footer>
+
+</div>
+<br>
+
+<!-- SCRIPT JAVA -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    let workbook;
+
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            const data = new Uint8Array(evt.target.result);
+            workbook = XLSX.read(data, {type: 'array'});
+            const sheetSelect = document.getElementById('sheetSelect');
+            sheetSelect.innerHTML = '';
+            workbook.SheetNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.text = name;
+                sheetSelect.appendChild(option);
+            });
+            document.getElementById('sheetCard').style.display = 'block';
+            document.getElementById('calcCard').style.display = 'block';
+            document.getElementById('resultado').innerHTML = '';
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    function calculateAlpha(data) {
+        const k = data[0].length;
+        const n = data.length;
+
+        let itemVars = [];
+        for(let j=0; j<k; j++){
+            let col = data.map(row => row[j]);
+            let mean = col.reduce((a,b)=>a+b,0)/n;
+            let varCol = col.reduce((a,b)=>a + (b-mean)**2, 0)/(n-1);
+            itemVars.push(varCol);
+        }
+
+        let totalScores = data.map(row => row.reduce((a,b)=>a+b,0));
+        let meanTotal = totalScores.reduce((a,b)=>a+b,0)/n;
+        let totalVar = totalScores.reduce((a,b)=>a + (b-meanTotal)**2, 0)/(n-1);
+
+        const alpha = (k/(k-1)) * (1 - (itemVars.reduce((a,b)=>a+b,0)/totalVar));
+        return alpha;
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+        const sheetName = document.getElementById('sheetSelect').value;
+        const ws = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(ws, {header:1});
+        const headers = jsonData[0];
+
+        const itemCols = headers.map((h,i)=> h.toLowerCase().startsWith("item") ? i : -1).filter(i=>i>=0);
+        if(itemCols.length === 0){
+            alert("Nenhuma coluna 'Item' encontrada.");
+            return;
+        }
+
+        const data = jsonData.slice(1).map(row => itemCols.map(i => parseFloat(row[i])));
+        const alpha = calculateAlpha(data);
+
+        document.getElementById('resultado').innerHTML = `🧮 <strong>Alfa de Cronbach:</strong> ${alpha.toFixed(4)}`;
+    });
+</script>
+
+
+</body>
+</html>
