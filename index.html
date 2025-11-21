@@ -87,9 +87,9 @@
         }
 
     .imagem-responsiva {
-       max-width: 100%; /* Garante que a imagem nunca ultrapasse a largura do seu contêiner */
-       height: auto;    /* Ajusta a altura automaticamente para manter a proporção original */
-       display: block;  /* Ajuda a remover espaços indesejados abaixo da imagem (comum com elementos inline) */
+	max-width: 100%; /* Garante que a imagem nunca ultrapasse a largura do seu contêiner */
+       	height: auto;    /* Ajusta a altura automaticamente para manter a proporção original */
+       	display: block;  /* Ajuda a remover espaços indesejados abaixo da imagem (comum com elementos inline) */
         }
 
 </style>
@@ -112,13 +112,18 @@
         <label>📑 Selecione a aba:</label>
         <select id="sheetSelect"></select>
     </div>
-<b  style="border: 2px solid black;"> Passos para o uso da calculadora:</b><br><br>
-<h5 style="text-align: justify;">
-1) Primeiramente deverá fazer download da planilha (que já está previamente preenchida) , basta clicar neste link  para descarregar a planilha:
-<a href="ferramenta_aig_com_dados.xlsx"> ferramenta_aig_com_dados.xlsx</a>; <br>
-2) Ele irá para a sua pasta Download em seu computador, basta ir no botão "Escolher arquivo", buscar o arquivo na pasta e importa-lo; <br>
-3) Aparecerá abaixo "Selecionar aba", escolha pelo menu o ítem "Responses"; <br>
-4) Após basta clicar em "Calcular Alfa" que o resultado será apresentado logo abaixo:</h5>
+
+<b  style="border: 2px solid black;"> Passos para o uso da calculadora:</b>
+<br><br>
+     <h5 style="text-align: justify;">
+	1) Primeiramente deverá fazer download da planilha (que já está previamente preenchida) , basta 	clicar neste link  para descarregar a planilha:
+	<a href="ferramenta_aig_com_dados.xlsx"> ferramenta_aig_com_dados.xlsx</a>; <br>
+
+	2) Ele irá para a sua pasta Download em seu computador, basta ir no botão "Escolher arquivo", 	buscar o arquivo na pasta e importa-lo; <br>
+
+	3) Aparecerá abaixo "Selecionar aba", escolha pelo menu o ítem "Responses"; <br>
+
+	4) Após basta clicar em "Calcular Alfa" que o resultado será apresentado logo abaixo:</h5>
 
     <div class="card" style="display:none;" id="calcCard">
         <button id="calcBtn">Calcular Alfa</button>
@@ -148,6 +153,7 @@
 <br> - Mostrar o resultado na tela.
 <li> EXCEL -  Programa Microsfot Office (Planilha Excel)  Office (Planilha xlsx) 
 <br><br>
+
 <img class="imagem-responsiva" src="fig6.jpg" alt="Descrição da imagem"></img><br>
 
 <br><br><hr>
@@ -172,15 +178,15 @@ Referência:
 <h4>(1) O que o HTML faz (Resumo)</h4>
 <br>
 <h6 style="text-align: justify;">
-O arquivo HTML criado para você funciona como um miniaplicativo web.  <br>
+O arquivo HTML criado para você funciona como um miniaplicativo web.  
 
-    1 — Permite enviar um arquivo Excel (.xlsx): O usuário clica em “Enviar planilha” e escolhe o arquivo.
+<br>1 — Permite enviar um arquivo Excel (.xlsx): O usuário clica em “Enviar planilha” e escolhe o arquivo.
  <br> 
 
 <br>2 — Lê o arquivo no navegador. Usa a biblioteca SheetJS (XLSX.js) para:
-<br> - Ler o conteúdo da planilha;
-<br> - Descobrir quais abas existem;
-<br> - Permitir ao usuário escolher uma delas.
+	<br> - Ler o conteúdo da planilha;
+	<br> - Descobrir quais abas existem;
+	<br> - Permitir ao usuário escolher uma delas.
 <br>
 - Link para baixar a planilha:
 <a href="ferramenta_aig_com_dados.xlsx">ferramenta_aig_com_dados.xlsx</a> <br>
@@ -189,26 +195,24 @@ O arquivo HTML criado para você funciona como um miniaplicativo web.  <br>
 <br>3 — Identifica colunas que começam com “Item” <br>
 Qualquer coluna cujo nome comece com: <br>
 Item
-<br>item
+	<br>item
+	<br>ITEM
+	<br>item1
+	<br>Item_01
+	<br> é considerada um item da escala.
 
-<br>ITEM
-<br>item1
-<br>Item_01
-<br> é considerada um item da escala.
-
-<br><br>
-4 — Extrai somente essas colunas: <br>
+<br>
+<br>4 — Extrai somente essas colunas: <br>
 O aplicativo pega apenas as colunas dos itens e converte os valores para números.<br>
-<br>
 
-5 — Calcula o Alfa de Cronbach em JavaScript: <br>
+<br>5 — Calcula o Alfa de Cronbach em JavaScript: <br>
 A lógica matemática é aplicada dentro do navegador, sem servidor. <br>
-<br>
 
-6 — Mostra o resultado estilizado na tela: <br>
+<br>6 — Mostra o resultado estilizado na tela: <br>
 - Exibe algo como:<br>
 <i><b>Alfa de Cronbach: 0.8421 </b></i>
 </h6>
+
 <br><br>
 <hr>
 <br>
@@ -222,11 +226,13 @@ onde:<br>
  
 <img class="imagem-responsiva" src="fig1.jpg" alt="Descrição da imagem"></img><br>
 
-•	k = número de itens<br>
-•	Var(itens) = variância de cada item individual <br>
-•	Var(total) = variância da soma dos itens de cada participante <br>
+	• k = número de itens<br>
+	• Var(itens) = variância de cada item individual <br>
+	• Var(total) = variância da soma dos itens de cada participante <br>
 </h6>
+
 <br><br>
+
 <hr><br>
 
 <h4><b>(3) Passos que o código segue:</b></h4>
@@ -237,33 +243,32 @@ Para cada coluna Item1, Item2, Item3…
 <br>
 <br> 2 — Soma essas variâncias: <br><br>
 </h6>
-<h3>∑Var(item)</h3>
+	<h3>∑Var(item)</h3>
 <h6>
 <br> 
 <br> 3 — Soma os itens por linha (pessoa por pessoa)
-<br>Exemplo:
-<br>
-
-<br>
-<img class="imagem-responsiva" src="fig4.jpg" alt="Descrição da imagem"></img><br>
-<br>
-<br>
+	<br>Exemplo:
+<br><br>
+	<img class="imagem-responsiva" src="fig4.jpg" alt="Descrição da imagem"></img><br>
+<br><br>
 
 
 <br> 4 — Calcula a variância dos totais (Var(total))
 <br>
+
 <br> 5 — Aplica a fórmula
-<br>Com todo mundo respondido, aplica: <br>
-<img class="imagem-responsiva" src="fig2.jpg" alt="Descrição da imagem"></img><br>
+	<br>Com todo mundo respondido, aplica: <br>
+	<img class="imagem-responsiva" src="fig2.jpg" alt="Descrição da imagem"></img><br>
+<br>
+
+<br>6 — Finalmente: O resultado final é o alfa. 
 <br><br>
-6 — Finalmente: O resultado final é o alfa. 
-<br><br>
-<img class="imagem-responsiva" src="fig5.jpg" alt="Descrição da imagem"></img><br>
+	<img class="imagem-responsiva" src="fig5.jpg" alt="Descrição da imagem"></img><br>
 
 </div>
 <br><br>
 <footer>
-<h6 style="color:blue;  border: 2px solid blue;"><i>© 2025. All rights reserved LUCK WAY® Informática -  Developed by: Iraê César Brandão</i></h6>
+	<h6 style="color:blue;  border: 2px solid blue;"><i>© 2025. All rights reserved LUCK WAY® Informática -  Developed by: Iraê César Brandão</i></h6>
 </footer>
 
 </div>
