@@ -1,4 +1,5 @@
-LINGUAGENS UTILIZADAS:
+LINGUAGENS UTILIZADAS:<br>
+<link de acesso<:  https://irae-cesar-brandao.github.io/calculadora_alfa_de_cronbach/   
 	HTML = estrutura
 	CSS = aparência
 	JavaScript = lógica e cálculos e a lógica do aplicativo, incluindo:
