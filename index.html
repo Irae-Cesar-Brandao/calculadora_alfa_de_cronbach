@@ -113,25 +113,52 @@
         <select id="sheetSelect"></select>
     </div>
 
+
+<!-- ORIENTAÇÕES TEXTUAL DAS ORIENTAÇÕES -->
+
 <b> Passos para o uso da calculadora:</b>
 <br><br>
      <h5 style="text-align: justify;">
 	1) Primeiramente deverá fazer download da planilha (que já está previamente preenchida), basta 	clicar neste link  para descarregar a planilha:
+
+
+<!-- HIPERLINK DE DOWNLOAD DA TABELA DE 5 ALUNOS -->
+
 	<a href="ferramenta_aig_com_dados.xlsx"> ferramenta_aig_com_dados.xlsx</a>; <br>
+
 	2) Esta segunda planilha tem 20 estudantes, para testes com mais estudantes. <br>
-    <a href="ferramenta_aig_20_estudantes.xlsx"> ferramenta_aig_20_estudantes</a>; <br>
+
+<!-- HIPERLINK DE DOWNLOAD DA TABELA DE  20 ALUNOS -->
+
+    <a href="ferramenta_20_estudantes.xlsx"> ferramenta_20_estudantes.xlsx</a>; <br>
+
 	3) Ele irá para a sua pasta Download em seu computador, basta ir no botão "Escolher arquivo", 	buscar o arquivo na pasta e importa-lo; <br>
 
 	4) Aparecerá abaixo "Selecionar aba", escolha pelo menu o ítem "Responses"; <br>
 
 	5) Após basta clicar em "Calcular Alfa" que o resultado será apresentado logo abaixo:</h5>
 
+<!-- BOTÃO DE CALCULAR ALFA --> 
+
     <div class="card" style="display:none;" id="calcCard">
         <button id="calcBtn">Calcular Alfa</button>
     </div>
 
-    <div id="resultado"></div>
 
+<!-- BOTÃO DE EXPORTAÇÃO DO EXCEL PARA DOWNLOAD-->
+    <div id="resultado"></div>
+       <div class="card" style="display:none;" id="exportCard">
+        <button id="exportBtn">Exportar Estatística (Excel)</button>
+    </div>
+
+
+
+<!-- GRÁFICO - GERA O GRÁFICO LOGO APÓS O CALCULO EFETUADO -->
+
+    <div class="card" style="display:none;" id="graficoCard">
+      <h3>📊 Variância dos Itens</h3>
+        <canvas id="graficoVar" height="220"></canvas>
+    </div>
 
 <hr>
 <br>
@@ -277,68 +304,134 @@ Para cada coluna Item1, Item2, Item3…
 
 <!-- SCRIPT JAVA -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
-    let workbook;
+let workbook;
+let ultimoResultado = null; // Guardar estatísticas
+let ultimaVarianciaItens = null; // Guardar variâncias
+let grafico = null; // Chart.js
 
-    document.getElementById('fileInput').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            const data = new Uint8Array(evt.target.result);
-            workbook = XLSX.read(data, {type: 'array'});
-            const sheetSelect = document.getElementById('sheetSelect');
-            sheetSelect.innerHTML = '';
-            workbook.SheetNames.forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.text = name;
-                sheetSelect.appendChild(option);
-            });
-            document.getElementById('sheetCard').style.display = 'block';
-            document.getElementById('calcCard').style.display = 'block';
-            document.getElementById('resultado').innerHTML = '';
-        };
-        reader.readAsArrayBuffer(file);
-    });
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        const data = new Uint8Array(evt.target.result);
+        workbook = XLSX.read(data, { type: "array" });
+        const sheetSelect = document.getElementById("sheetSelect");
+        sheetSelect.innerHTML = "";
+        workbook.SheetNames.forEach((name) => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.text = name;
+            sheetSelect.appendChild(option);
+        });
 
-    function calculateAlpha(data) {
-        const k = data[0].length;
-        const n = data.length;
+        document.getElementById("sheetCard").style.display = "block";
+        document.getElementById("calcCard").style.display = "block";
 
-        let itemVars = [];
-        for(let j=0; j<k; j++){
-            let col = data.map(row => row[j]);
-            let mean = col.reduce((a,b)=>a+b,0)/n;
-            let varCol = col.reduce((a,b)=>a + (b-mean)**2, 0)/(n-1);
-            itemVars.push(varCol);
-        }
+        document.getElementById("resultado").innerHTML = "";
+        document.getElementById("exportCard").style.display = "none";
+        document.getElementById("graficoCard").style.display = "none";
+    };
+    reader.readAsArrayBuffer(file);
+});
 
-        let totalScores = data.map(row => row.reduce((a,b)=>a+b,0));
-        let meanTotal = totalScores.reduce((a,b)=>a+b,0)/n;
-        let totalVar = totalScores.reduce((a,b)=>a + (b-meanTotal)**2, 0)/(n-1);
+function calculateAlpha(data) {
+    const k = data[0].length;
+    const n = data.length;
 
-        const alpha = (k/(k-1)) * (1 - (itemVars.reduce((a,b)=>a+b,0)/totalVar));
-        return alpha;
+    let itemVars = [];
+    for (let j = 0; j < k; j++) {
+        let col = data.map((row) => row[j]);
+        let mean = col.reduce((a, b) => a + b, 0) / n;
+        let varCol = col.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1);
+        itemVars.push(varCol);
     }
 
-    document.getElementById('calcBtn').addEventListener('click', () => {
-        const sheetName = document.getElementById('sheetSelect').value;
-        const ws = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(ws, {header:1});
-        const headers = jsonData[0];
+    let totalScores = data.map((row) => row.reduce((a, b) => a + b, 0));
+    let meanTotal = totalScores.reduce((a, b) => a + b, 0) / n;
+    let totalVar =
+        totalScores.reduce((a, b) => a + (b - meanTotal) ** 2, 0) / (n - 1);
 
-        const itemCols = headers.map((h,i)=> h.toLowerCase().startsWith("item") ? i : -1).filter(i=>i>=0);
-        if(itemCols.length === 0){
-            alert("Nenhuma coluna 'Item' encontrada.");
-            return;
-        }
+    const alpha = (k / (k - 1)) * (1 - itemVars.reduce((a, b) => a + b, 0) / totalVar);
 
-        const data = jsonData.slice(1).map(row => itemCols.map(i => parseFloat(row[i])));
-        const alpha = calculateAlpha(data);
+    ultimoResultado = alpha;
+    ultimaVarianciaItens = itemVars;
+    return alpha;
+}
 
-        document.getElementById('resultado').innerHTML = `🧮 <strong>Alfa de Cronbach:</strong> ${alpha.toFixed(4)}`;
+document.getElementById("calcBtn").addEventListener("click", () => {
+    const sheetName = document.getElementById("sheetSelect").value;
+    const ws = workbook.Sheets[sheetName];
+    const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    const headers = jsonData[0];
+
+    const itemCols = headers
+        .map((h, i) => (h.toLowerCase().startsWith("item") ? i : -1))
+        .filter((i) => i >= 0);
+
+    if (itemCols.length === 0) {
+        alert("Nenhuma coluna 'Item' encontrada.");
+        return;
+    }
+
+    const data = jsonData.slice(1).map((row) =>
+        itemCols.map((i) => parseFloat(row[i]))
+    );
+    const alpha = calculateAlpha(data);
+
+    document.getElementById(
+        "resultado"
+    ).innerHTML = `🧮 <strong>Alfa de Cronbach:</strong> ${alpha.toFixed(4)}`;
+
+    // Mostrar botão exportar e gráfico
+    document.getElementById("exportCard").style.display = "block";
+    document.getElementById("graficoCard").style.display = "block";
+
+    // Criar gráfico Chart.js
+    if (grafico !== null) grafico.destroy();
+
+    const ctx = document.getElementById("graficoVar").getContext("2d");
+    grafico = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ultimaVarianciaItens.map((_, i) => `Item ${i + 1}`),
+            datasets: [
+                {
+                    label: "Variância dos Itens",
+                    data: ultimaVarianciaItens,
+                },
+            ],
+        },
     });
+});
+
+// Botão exportar estatística
+document.getElementById("exportBtn").addEventListener("click", () => {
+    if (!ultimoResultado || !ultimaVarianciaItens) {
+        alert("Calcule o Alfa antes de exportar.");
+        return;
+    }
+
+    const wsData = [
+        ["Estatística", "Valor"],
+        ["Alfa de Cronbach", ultimoResultado],
+        [],
+        ["Item", "Variância"],
+        ...ultimaVarianciaItens.map((v, i) => [`Item ${i + 1}`, v]),
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Estatística");
+
+    XLSX.writeFile(wb, "estatistica_cronbach.xlsx");
+});
+
 </script>
+
+<!-- ESTE SCRIPT CRIA O GRÁFICO ESPERADO ABAIXO DO RESULTADO --> 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 </body>
