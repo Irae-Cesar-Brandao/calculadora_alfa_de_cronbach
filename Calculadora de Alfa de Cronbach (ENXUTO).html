@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Alfa de Cronbach</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        input[type="file"], select, button {
+            display: block;
+            width: 100%;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Alfa de Cronbach</h1>
+        <input type="file" id="fileInput" accept=".xlsx" />
+        <select id="sheetSelect" style="display:none"></select>
+        <button id="calcBtn" style="display:none">Calcular Alfa</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let workbook;
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const data = new Uint8Array(evt.target.result);
+                workbook = XLSX.read(data, {type: 'array'});
+                const sheetSelect = document.getElementById('sheetSelect');
+                sheetSelect.innerHTML = '';
+                workbook.SheetNames.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.text = name;
+                    sheetSelect.appendChild(option);
+                });
+                sheetSelect.style.display = 'block';
+                document.getElementById('calcBtn').style.display = 'block';
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function calculateAlpha(data) {
+            const k = data[0].length;
+            const n = data.length;
+
+            // Variância de cada item
+            let itemVars = [];
+            for(let j=0; j<k; j++){
+                let col = data.map(row => row[j]);
+                let mean = col.reduce((a,b)=>a+b,0)/n;
+                let varCol = col.reduce((a,b)=>a + (b-mean)**2, 0)/(n-1);
+                itemVars.push(varCol);
+            }
+
+            // Variância total
+            let totalScores = data.map(row => row.reduce((a,b)=>a+b,0));
+            let meanTotal = totalScores.reduce((a,b)=>a+b,0)/n;
+            let totalVar = totalScores.reduce((a,b)=>a + (b-meanTotal)**2, 0)/(n-1);
+
+            // Alfa de Cronbach
+            const alpha = (k/(k-1)) * (1 - (itemVars.reduce((a,b)=>a+b,0)/totalVar));
+            return alpha;
+        }
+
+        document.getElementById('calcBtn').addEventListener('click', () => {
+            const sheetName = document.getElementById('sheetSelect').value;
+            const ws = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(ws, {header:1});
+            const headers = jsonData[0];
+
+            // Identificar colunas "Item"
+            const itemCols = headers.map((h,i)=> h.toLowerCase().startsWith("item") ? i : -1).filter(i=>i>=0);
+
+            if(itemCols.length === 0){
+                alert("Nenhuma coluna 'Item' encontrada.");
+                return;
+            }
+
+            // Extrair dados
+            const data = jsonData.slice(1).map(row => itemCols.map(i => parseFloat(row[i])));
+            const alpha = calculateAlpha(data);
+
+            document.getElementById('resultado').innerHTML = `<strong>Alfa de Cronbach:</strong> ${alpha.toFixed(4)}`;
+        });
+    </script>
+</body>
+</html>
